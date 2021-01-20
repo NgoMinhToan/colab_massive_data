@@ -1,4 +1,4 @@
-# **Môn học: ** Xử lý dữ liệu lớn
+# Môn học: Xử lý dữ liệu lớn
 
 ### [Tuần 1](https://ngominhtoan.github.io/colab_massive_data/week1/)
 
@@ -8,4 +8,16 @@
 
 
 
-_ Edit by **Ngô Minh Toàn**_
+
+
+
+
+
+
+
+
+
+
+
+
+
