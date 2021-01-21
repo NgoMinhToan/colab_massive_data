@@ -1,6 +1,6 @@
 # Môn học: Xử lý dữ liệu lớn
 
-### [Tuần 1](https://ngominhtoan.github.io/colab_massive_data/week1/)
+### [Tuần 3](https://ngominhtoan.github.io/colab_massive_data/week3/)
 
 1. Tạo trang bằng Github và trình bày về spark và mapreduce.
 
