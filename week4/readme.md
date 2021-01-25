@@ -70,7 +70,7 @@ Lưu ý: Tạo đối tượng SparkSession , nội bộ nó tạo một SparkCo
 
 Bằng cách sử dụng `parallelize()` hàm của `SparkContext ( sparkContext.parallelize () )`, bạn có thể tạo RDD. Hàm này tải bộ sưu tập hiện có từ chương trình trình điều khiển của bạn vào song song hóa RDD. Đây là phương pháp cơ bản để tạo RDD và được sử dụng khi bạn đã có dữ liệu trong bộ nhớ được tải từ tệp hoặc từ cơ sở dữ liệu. và nó yêu cầu tất cả dữ liệu phải có trên chương trình trình điều khiển trước khi tạo RDD.
 
-<img>Hướng dẫn Pyspark rdd
+![Hướng dẫn Pyspark rdd](https://ngominhtoan.github.io/colab_massive_data/week4/pic1.webp)
 
 #### RDD từ danh sách
 '''
