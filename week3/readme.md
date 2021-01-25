@@ -87,5 +87,7 @@ Tạo Project trên Colab dùng Spark đọc vào một file văn bản và đ�
 
 2. [stackoverflow.com - PySpark - sortByKey() method to return values from k,v pairs in their original order](https://stackoverflow.com/questions/31104491/pyspark-sortbykey-method-to-return-values-from-k-v-pairs-in-their-original-o)
 
+3. [stackoverflow.com - Given a URL to a text file, what is the simplest way to read the contents of the text file?](https://stackoverflow.com/questions/1393324/given-a-url-to-a-text-file-what-is-the-simplest-way-to-read-the-contents-of-the)
+
 
 _ Edit by **Ngô Minh Toàn**_
