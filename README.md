@@ -8,7 +8,9 @@
 
 ### [Tuần 4](https://ngominhtoan.github.io/colab_massive_data/week4/)
 
+1. Tìm hiểu về RDD
 
+2. Tìm hiểu về DataFrame
 
 
 
