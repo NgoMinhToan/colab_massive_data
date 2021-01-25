@@ -48,13 +48,13 @@ RDD được tạo ra chủ yếu theo hai cách khác nhau,
 
 - Trước khi chúng ta xem xét các ví dụ, trước tiên hãy khởi tạo SparkSession bằng phương thức mẫu xây dựng được định nghĩa trong lớp SparkSession. Trong khi khởi tạo, chúng ta cần cung cấp tên chính và ứng dụng như hình bên dưới. Trong ứng dụng thời gian thực, bạn sẽ vượt qua master từ spark-submit thay vì hardcoding trên ứng dụng Spark.
 
-'''
+```
 from pyspark.sql import SparkSession
 spark:SparkSession = SparkSession.builder()
       .master("local[1]")
       .appName("SparkByExamples.com")
       .getOrCreate()    
-'''
+```
 
 - *master()* - Nếu bạn đang chạy nó trên cụm, bạn cần sử dụng tên chính của mình làm đối số cho chủ (). thông thường, nó sẽ là một trong hai  yarn (Yet Another Resource Negotiator)hoặc  mesos tùy thuộc vào thiết lập cụm của bạn.
 
@@ -73,11 +73,12 @@ Bằng cách sử dụng `parallelize()` hàm của `SparkContext ( sparkContext
 ![Hướng dẫn Pyspark rdd](https://ngominhtoan.github.io/colab_massive_data/week4/pic1.webp)
 
 #### RDD từ danh sách
-'''
+
+```
 # Create RDD from parallelize  
 data = [1,2,3,4,5,6,7,8,9,10,11,12]
 rdd=spark.sparkContext.parallelize(data)
-'''
+```
 
 Đối với các ứng dụng sản xuất, chúng tôi chủ yếu là tạo RDD bằng cách sử dụng hệ thống lưu trữ bên ngoài như `HDFS`, `S3`, `HBasevv` Để làm cho nó đơn giản cho PySpark RDD này hướng dẫn chúng ta đang sử dụng tập tin từ hệ thống địa phương hoặc tải nó từ danh sách python để tạo RDD.
 
@@ -85,19 +86,19 @@ rdd=spark.sparkContext.parallelize(data)
 
 Sử dụng [phương thức textFile (), chúng ta có thể đọc tệp văn bản](https://sparkbyexamples.com/spark/spark-read-text-file-rdd-dataframe/) (.txt) vào RDD.
 
-'''
+```
 #Create RDD from external Data source
 rdd2 = spark.sparkContext.textFile("/path/textFile.txt")
-'''
+```
 
 #### Tạo RDD bằng sparkContext.wholeTextFiles ()
 
 [Hàm wholeTextFiles ()](https://sparkbyexamples.com/spark/spark-read-text-file-rdd-dataframe/) trả về một [PairRDD](https://sparkbyexamples.com/apache-spark-rdd/spark-pair-rdd-functions/) với khóa là đường dẫn tệp và giá trị là nội dung tệp.
 
-'''
+```
 #Reads entire file into a RDD as single record.
 rdd3 = spark.sparkContext.wholeTextFiles("/path/textFile.txt")
-'''
+```
 
 Bên cạnh việc sử dụng các tệp văn bản, chúng ta cũng có thể [tạo RDD từ tệp CSV](https://sparkbyexamples.com/pyspark/pyspark-read-csv-file-into-dataframe/) , JSON và nhiều định dạng khác.
 
@@ -105,20 +106,20 @@ Bên cạnh việc sử dụng các tệp văn bản, chúng ta cũng có thể 
 
 Sử dụng `emptyRDD()` phương thức trên sparkContext, chúng ta có thể [tạo một RDD không có dữ liệu](https://sparkbyexamples.com/spark/spark-how-to-create-an-empty-rdd/) . Phương pháp này tạo ra một RDD trống không có phân vùng.
 
-'''
+```
 # Creates empty RDD with no partition    
 rdd = spark.sparkContext.emptyRDD 
 # rddString = spark.sparkContext.emptyRDD[String]
-'''
+```
 
 #### Tạo RDD trống với phân vùng
 
 Đôi khi, chúng ta có thể cần ghi RDD trống vào các tệp theo phân vùng, Trong trường hợp này, bạn nên tạo RDD trống có phân vùng.
 
-'''
+```
 #Create empty RDD with partition
 rdd2 = spark.sparkContext.parallelize([],10) #This creates 10 partitions
-'''
+```
 
 ### RDD Song song hóa
 
@@ -126,10 +127,10 @@ Khi chúng ta sử dụng `parallelize()` hoặc `textFile()` hoặc  `wholeText
 
 **getNumPartitions ()** - Đây là một hàm RDD trả về một số phân vùng mà tập dữ liệu của chúng tôi được chia thành.
 
-'''
+```
 print("initial partition count:"+str(rdd.getNumPartitions()))
 #Outputs: initial partition count:2
-'''
+```
 
 **Đặt song song theo cách thủ công** - Chúng ta cũng có thể đặt một số phân vùng theo cách thủ công, tất cả những gì chúng ta cần là chuyển một số phân vùng làm tham số thứ hai cho các hàm này chẳng hạn   `sparkContext.parallelize([1,2,3,4,56,7,8,9,12,3], 10)`. 
 
@@ -139,11 +140,11 @@ print("initial partition count:"+str(rdd.getNumPartitions()))
 
 Cả hai hàm đều lấy số lượng phân vùng để phân vùng lại rdd như hình dưới đây. Lưu ý rằng [repartition()](https://sparkbyexamples.com/pyspark/pyspark-repartition-vs-coalesce/) phương pháp là một hoạt động rất tốn kém vì nó xáo trộn dữ liệu từ tất cả các nút trong một cụm. 
 
-'''
+```
 reparRdd = rdd.repartition(4)
 print("re-partition count:"+str(reparRdd.getNumPartitions()))
 #Outputs: "re-partition count:4
-'''
+```
 
 **Lưu ý:** các phương thức repartition () hoặc thanesce () cũng trả về một RDD mới.
 
@@ -161,44 +162,44 @@ Trong phần Chuyển đổi PySpark RDD của hướng dẫn này, tôi sẽ gi
 
 Đầu tiên, tạo một RDD bằng cách đọc một tệp văn bản. Tệp văn bản được sử dụng ở đây có sẵn tại   dự án [GitHub](https://github.com/spark-examples/spark-scala-examples/blob/master/src/main/resources/test.txt) .
 
-'''
+```
 rdd = spark.sparkContext.textFile("/tmp/test.txt")
-'''
+```
 
 **flatMap** -  `flatMap()` phép biến đổi làm phẳng RDD sau khi áp dụng hàm và trả về một RDD mới. Trong ví dụ dưới đây, đầu tiên, nó chia từng bản ghi theo không gian trong RDD và cuối cùng làm phẳng nó. Kết quả RDD bao gồm một từ duy nhất trên mỗi bản ghi.
 
-'''
+```
 rdd2 = rdd.flatMap(lambda x: x.split(" "))
-'''
+```
 
 **map** - `map()` biến đổi được sử dụng để áp dụng bất kỳ hoạt động phức tạp nào như thêm cột, cập nhật cột, v.v., đầu ra của phép biến đổi bản đồ sẽ luôn có cùng số bản ghi như đầu vào.
 
 Trong ví dụ đếm từ của chúng tôi, chúng tôi đang thêm một cột mới với giá trị 1 cho mỗi từ, kết quả của RDD là `PairRDDFunctions` chứa các cặp khóa-giá trị, từ thuộc loại Chuỗi là Khóa và 1 thuộc loại Int là giá trị.
 
-'''
+```
 rdd3 = rdd2.map(lambda x: (x,1))
-'''
+```
 
 **ReduceByKey** -  `reduceByKey()` hợp nhất các giá trị cho mỗi khóa với chức năng được chỉ định. Trong ví dụ của chúng tôi, nó làm giảm chuỗi từ bằng cách áp dụng hàm sum trên giá trị. Kết quả RDD của chúng tôi chứa các từ duy nhất và số lượng của chúng. 
 
-'''
+```
 rdd5 = rdd4.reduceByKey(lambda a,b: a+b)
-'''
+```
 
 **sortByKey** -  `sortByKey()` phép biến đổi được sử dụng để sắp xếp các phần tử RDD trên khóa. Trong ví dụ của chúng tôi, đầu tiên, chúng tôi chuyển đổi RDD [(String, Int]) thành RDD [(Int, String]) bằng cách sử dụng phép biến đổi bản đồ và áp dụng sortByKey mà lý tưởng là sắp xếp trên một giá trị số nguyên. Và cuối cùng, câu lệnh foreach với println trả về tất cả các từ trong RDD và số lượng của chúng là cặp khóa-giá trị
 
-'''
+```
 rdd6 = rdd5.map(lambda x: (x[1],x[0])).sortByKey()
 #Print rdd6 result to console
 print(rdd6.collect())
-'''
+```
 
 **filter()** được sử dụng để lọc các bản ghi trong RDD. Trong ví dụ của chúng tôi, chúng tôi đang lọc tất cả các từ bắt đầu bằng “a”.
 
-'''
+```
 rdd4 = rdd3.filter(lambda x : 'an' in x[1])
 print(rdd4.collect())
-'''
+```
 
 ###
 
