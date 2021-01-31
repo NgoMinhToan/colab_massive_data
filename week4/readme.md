@@ -493,7 +493,6 @@ Chúng tôi cũng có thể tạo DataFrame bằng cách đọc các tệp Avro,
 
 - [DataFrame bằng cách truyền dữ liệu từ Kafka](https://sparkbyexamples.com/spark/spark-streaming-kafka-consumer-example-in-json-format/)
 
-## Bài tập
 
 ## Tài liệu tham khảo
 
