@@ -325,6 +325,8 @@ print(rdd4.collect())
 
 DataFrame là một kiểu dữ liệu collection phân tán, được tổ chức thành các cột được đặt tên. Về mặt khái niệm, nó tương đương với các bảng quan hệ (relational tables) đi kèm với các kỹ thuật tối ưu tính toán.
 
+![Create DataFrame](https://ngominhtoan.github.io/colab_massive_data/week4/pic2.jpg)
+
 ### *Tạo DataFrame*
 
 #### **Tạo DataFrame từ RDD**
