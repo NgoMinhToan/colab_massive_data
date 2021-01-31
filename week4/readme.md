@@ -483,15 +483,6 @@ df2 = spark.read.json("/src/resources/file.json")
 
 Tương tự, chúng ta có thể tạo DataFrame trong PySpark từ hầu hết các cơ sở dữ liệu quan hệ mà tôi chưa trình bày ở đây và tôi sẽ để bạn khám phá.
 
-#### **Các nguồn khác (Avro, Parquet, ORC, Kafka)**
-
-Chúng tôi cũng có thể tạo DataFrame bằng cách đọc các tệp Avro, Parquet, ORC, Binary và truy cập bảng Hive và HBase, đồng thời đọc dữ liệu từ Kafka mà tôi đã giải thích trong các bài viết dưới đây, tôi khuyên bạn nên đọc chúng khi có thời gian.
-
-- [PySpark Đọc tệp Parquet vào DataFrame](https://sparkbyexamples.com/pyspark/pyspark-read-and-write-parquet-file/)
-
-- [DataFrame từ nguồn Avro](https://sparkbyexamples.com/spark/using-avro-data-files-from-spark-sql-2-4/)
-
-- [DataFrame bằng cách truyền dữ liệu từ Kafka](https://sparkbyexamples.com/spark/spark-streaming-kafka-consumer-example-in-json-format/)
 
 
 ## Tài liệu tham khảo
