@@ -1,5 +1,123 @@
 # **Tuần 4**
 
+## *Tìm hiểu về Spark Properties*
+
+Spark Properties kiểm soát hầu hết các cài đặt và được cấu hình riêng cho từng ứng dụng. Các properties được cài đặt trực tiếp qua SparkConf được đưa vào SparkContext. SparkConf cho phép bạn định cấu hình một số thuộc tính chung (ví dụ: URL chính và tên ứng dụng), giống như các cặp giá trị được đặt qua phương thức `set()`. Ví dụ: chúng ta có thể khởi tạo một ứng dụng với hai luồng như sau:
+
+```
+val conf = new SparkConf()
+             .setMaster("local[2]")
+             .setAppName("CountingSheep")
+val sc = new SparkContext(conf)
+```
+
+Các thuộc tính liên qua đến thời gian cần được cấu hình với các đơn vị thời gian nhất định
+
+```
+25ms (milliseconds)
+5s (seconds)
+10m or 10min (minutes)
+3h (hours)
+5d (days)
+1y (years)
+```
+
+Tương tự với thời gian, kính thước bao gồm các đơn vị sau
+
+```
+1b (bytes)
+1k or 1kb (kibibytes = 1024 bytes)
+1m or 1mb (mebibytes = 1024 kibibytes)
+1g or 1gb (gibibytes = 1024 mebibytes)
+1t or 1tb (tebibytes = 1024 gibibytes)
+1p or 1pb (pebibytes = 1024 tebibytes)
+```
+
+### *Dynamically Loading Spark Properties*
+
+Có thể cấu hình ứng dụng sau khi đã khởi động hay vì lý do nào đó mà chúng ta không muốn cố định các giá trị cấu hình từ trước. Chúng ta có thể tải các thuộc tính cấu hình trong thời gian thực thi
+
+Trước khi chạy cần tạo một config rỗng
+
+```
+val sc = new SparkContext(new SparkConf())
+```
+
+Sau đó, chúng ta có thể cung cấp các giá trị thuộc tính trong thời gian chạy như sau
+
+```
+./bin/spark-submit --name "My app" --master local[4] --conf spark.eventLog.enabled=false
+  --conf "spark.executor.extraJavaOptions=-XX:+PrintGCDetails -XX:+PrintGCTimeStamps" myApp.jar
+```
+
+### *Viewing Spark Properties*
+
+Giao diện người dùng web ứng dụng tại http://<driver>:4040liệt kê các thuộc tính Spark trong tab "Môi trường". Đây là một nơi hữu ích để kiểm tra để đảm bảo rằng các thuộc tính của bạn đã được đặt chính xác. Lưu ý rằng chỉ có giá trị xác định một cách rõ ràng thông qua spark-defaults.conf, SparkConfhoặc dòng lệnh sẽ xuất hiện. Đối với tất cả các thuộc tính cấu hình khác, bạn có thể giả sử giá trị mặc định được sử dụng.
+
+#### Thuộc tính có sẵn
+
+Dưới đây là các loại thuộc tính có sẵn trong spark
+
+- Thuộc tính ứng dụng.
+
+- Môi trường thực thi
+
+- Hành vi xáo trộn
+
+- Spark UI
+
+- Nén và tuần tự hóa
+
+- Quản lý bộ nhớ
+
+- Hành vi Thực thi
+
+- Kết nối mạng
+
+- Lập lịch trình
+
+- Phân bổ động
+
+- Bảo vệ
+
+- Cấu hình TLS / SSL
+
+- Spark SQL
+
+- Spark Streaming
+
+- SparkR
+
+- GraphX
+
+- Triển khai
+
+- Người quản lý cụm
+
+[Tìm hiểu thêm](https://spark.apache.org/docs/2.3.0/configuration.html#available-properties)
+
+#### Các biến môi trường
+
+Một số cài đặt Spark nhất định có thể được định cấu hình thông qua các biến môi trường, được đọc từ conf/spark-env.shtập lệnh trong thư mục nơi Spark được cài đặt (hoặc conf/spark-env.cmdtrên Windows). Ở chế độ Độc lập và Mesos, tệp này có thể cung cấp thông tin cụ thể cho máy như tên máy chủ. Nó cũng có nguồn gốc khi chạy các ứng dụng Spark cục bộ hoặc các tập lệnh gửi.
+
+Lưu ý rằng conf/spark-env.shkhông tồn tại theo mặc định khi Spark được cài đặt. Tuy nhiên, bạn có thể sao chép conf/spark-env.sh.templateđể tạo nó. Đảm bảo rằng bạn thực thi bản sao.
+
+Các biến sau có thể được đặt trong spark-env.sh:
+
+- **JAVA_HOME :** Vị trí nơi Java được cài đặt (nếu nó không ở trên mặc định của bạn PATH).
+
+- **PYSPARK_PYTHON :** Thực thi nhị phân Python để sử dụng cho PySpark trong cả trình điều khiển và công nhân (mặc định là python2.7nếu có, nếu không python). Thuộc tính spark.pyspark.pythonđược ưu tiên nếu nó được đặt
+
+- **PYSPARK_DRIVER_PYTHON :** Thực thi nhị phân Python để chỉ sử dụng cho PySpark trong trình điều khiển (mặc định là PYSPARK_PYTHON). Thuộc tính spark.pyspark.driver.pythonđược ưu tiên nếu nó được đặt
+
+- **SPARKR_DRIVER_R :** R binary thực thi để sử dụng cho SparkR shell (mặc định là R). Thuộc tính spark.r.shell.commandđược ưu tiên nếu nó được đặt
+
+- **SPARK_LOCAL_IP :** Địa chỉ IP của máy để liên kết.
+
+- **SPARK_PUBLIC_DNS :** Tên máy chủ chương trình Spark của bạn sẽ quảng cáo đến các máy khác.
+
+
+
 ## *Tìm hiểu về RDD*
 
 ### RDD (Tập dữ liệu phân tán đàn hồi) là gì?
@@ -201,11 +319,186 @@ rdd4 = rdd3.filter(lambda x : 'an' in x[1])
 print(rdd4.collect())
 ```
 
-###
+## Tìm hiểu về DataFrame
 
+### DataFrame là gì?
 
-### Bài tập
+DataFrame là một kiểu dữ liệu collection phân tán, được tổ chức thành các cột được đặt tên. Về mặt khái niệm, nó tương đương với các bảng quan hệ (relational tables) đi kèm với các kỹ thuật tối ưu tính toán.
 
-### Tài liệu tham khảo
+### Tạo DataFrame
+
+#### Tạo DataFrame từ RDD
+
+Một cách dễ dàng để tạo PySpark DataFrame là từ một RDD hiện có. đầu tiên, hãy tạo một Spark RDD từ một Danh sách bộ sưu tập bằng cách gọi hàm song song () từ SparkContext . Chúng tôi sẽ cần đối tượng rdd này cho tất cả các ví dụ của chúng tôi bên dưới.
+
+```
+spark = SparkSession.builder.appName('SparkByExamples.com').getOrCreate()
+rdd = spark.sparkContext.parallelize(data)
+```
+
+##### Sử dụng hàm toDF()
+
+Phương thức toDF () của PySpark RDD được sử dụng để tạo DataFrame từ RDD hiện có. Vì RDD không có cột, DataFrame được tạo với tên cột mặc định “_1” và “_2” vì chúng ta có hai cột.
+
+```
+dfFromRDD1 = rdd.toDF()
+dfFromRDD1.printSchema()
+```
+
+printchema () cho ra kết quả bên dưới.
+
+```
+root
+ |-- _1: string (nullable = true)
+ |-- _2: string (nullable = true)
+```
+
+Nếu bạn muốn cung cấp tên cột cho toDF() phương pháp sử dụng DataFrame với tên cột làm đối số như hình dưới đây.
+
+```
+columns = ["language","users_count"]
+dfFromRDD1 = rdd.toDF(columns)
+dfFromRDD1.printSchema()
+```
+
+Điều này tạo ra lược đồ của DataFrame với các tên cột.
+
+```
+root
+ |-- language: string (nullable = true)
+ |-- users: string (nullable = true)
+```
+
+Theo mặc định, kiểu dữ liệu của các cột này suy ra kiểu dữ liệu. Chúng ta có thể thay đổi hành vi này bằng cách cung cấp lược đồ , trong đó chúng ta có thể chỉ định tên cột, kiểu dữ liệu và giá trị có thể làm trống cho mỗi trường / cột.
+
+##### Sử dụng createDataFrame () từ SparkSession
+
+Sử dụng createDataFrame () từ SparkSession là một cách khác để tạo và nó lấy đối tượng rdd làm đối số. và chuỗi với toDF () để chỉ định tên cho các cột.
+
+```
+dfFromRDD2 = spark.createDataFrame(rdd).toDF(*columns)
+```
+
+#### Tạo DataFrame từ list dữ liệu
+
+Trong phần này, chúng ta sẽ xem cách tạo PySpark DataFrame từ một danh sách. Những ví dụ này sẽ tương tự như những gì chúng ta đã thấy trong phần trên với RDD, nhưng chúng ta sử dụng đối tượng dữ liệu danh sách thay vì đối tượng “rdd” để tạo DataFrame.
+
+##### Sử dụng createDataFrame () từ SparkSession
+
+Gọi `createDataFrame()` from `SparkSession` là một cách khác để tạo PySpark DataFrame, nó lấy một đối tượng danh sách làm đối số. và chuỗi với `0toDF()` để chỉ định tên cho các cột.
+
+```
+dfFromData2 = spark.createDataFrame(data).toDF(*columns)
+```
+
+##### Sử dụng createDataFrame () với kiểu Hàng
+
+`createDataFrame()` có một chữ ký khác trong PySpark lấy bộ sưu tập kiểu Hàng và lược đồ cho tên cột làm đối số. Để sử dụng điều này, trước tiên chúng ta cần chuyển đổi đối tượng “dữ liệu” từ danh sách sang danh sách Hàng.
+
+```
+rowData = map(lambda x: Row(*x), data) 
+dfFromData3 = spark.createDataFrame(rowData,columns)
+```
+
+##### Tạo DataFrame bằng lược đồ
+
+Nếu bạn muốn chỉ định tên cột cùng với kiểu dữ liệu của chúng, trước tiên bạn nên tạo lược đồ StructType và sau đó gán nó trong khi tạo DataFrame.
+
+```
+from pyspark.sql.types import StructType,StructField, StringType, IntegerType
+data2 = [("James","","Smith","36636","M",3000),
+    ("Michael","Rose","","40288","M",4000),
+    ("Robert","","Williams","42114","M",4000),
+    ("Maria","Anne","Jones","39192","F",4000),
+    ("Jen","Mary","Brown","","F",-1)
+  ]
+
+schema = StructType([ \
+    StructField("firstname",StringType(),True), \
+    StructField("middlename",StringType(),True), \
+    StructField("lastname",StringType(),True), \
+    StructField("id", StringType(), True), \
+    StructField("gender", StringType(), True), \
+    StructField("salary", IntegerType(), True) \
+  ])
+ 
+df = spark.createDataFrame(data=data2,schema=schema)
+df.printSchema()
+df.show(truncate=False)
+```
+
+Điều này dẫn đến sản lượng thấp hơn.
+
+```
+root
+ |-- firstname: string (nullable = true)
+ |-- middlename: string (nullable = true)
+ |-- lastname: string (nullable = true)
+ |-- id: string (nullable = true)
+ |-- gender: string (nullable = true)
+ |-- salary: integer (nullable = true)
+
++---------+----------+--------+-----+------+------+
+|firstname|middlename|lastname|id   |gender|salary|
++---------+----------+--------+-----+------+------+
+|James    |          |Smith   |36636|M     |3000  |
+|Michael  |Rose      |        |40288|M     |4000  |
+|Robert   |          |Williams|42114|M     |4000  |
+|Maria    |Anne      |Jones   |39192|F     |4000  |
+|Jen      |Mary      |Brown   |     |F     |-1    |
++---------+----------+--------+-----+------+------+
+```
+
+#### Tạo DataFrame từ tệp dữ liệu
+
+Trong thời gian thực, hầu hết bạn tạo DataFrame từ các tệp nguồn dữ liệu như CSV, Văn bản, JSON, XML, v.v.
+
+PySpark theo mặc định hỗ trợ nhiều định dạng dữ liệu mà không cần nhập bất kỳ thư viện nào và để tạo DataFrame, bạn cần sử dụng phương pháp thích hợp có sẵn trong `DataFrameReader` lớp.
+
+##### Tạo DataFrame từ CSV
+
+Sử dụng `csv()` phương thức của `DataFrameReader` đối tượng để tạo DataFrame từ tệp CSV. bạn cũng có thể cung cấp các tùy chọn như dấu phân cách sẽ sử dụng, cho dù bạn đã trích dẫn dữ liệu, định dạng ngày tháng, lược đồ suy luận, v.v. Vui lòng tham khảo PySpark Read CSV thành DataFrame
+
+```
+df2 = spark.read.csv("/src/resources/file.csv")
+```
+
+##### Tạo từ tệp văn bản (TXT)
+
+Tương tự, bạn cũng có thể tạo DataFrame bằng cách đọc từ tệp Văn bản, sử dụng `text()` phương thức của DataFrameReader để làm như vậy.
+
+```
+df2 = spark.read.text("/src/resources/file.txt")
+```
+
+##### Tạo từ tệp JSON
+
+PySpark cũng được sử dụng để xử lý các tệp dữ liệu bán cấu trúc như định dạng JSON. bạn có thể sử dụng json()phương thức của DataFrameReader để đọc tệp `JSON` vào DataFrame. Dưới đây là một ví dụ đơn giản.
+
+```
+df2 = spark.read.json("/src/resources/file.json")
+```
+
+Tương tự, chúng ta có thể tạo DataFrame trong PySpark từ hầu hết các cơ sở dữ liệu quan hệ mà tôi chưa trình bày ở đây và tôi sẽ để bạn khám phá.
+
+#### Các nguồn khác (Avro, Parquet, ORC, Kafka)
+
+Chúng tôi cũng có thể tạo DataFrame bằng cách đọc các tệp Avro, Parquet, ORC, Binary và truy cập bảng Hive và HBase, đồng thời đọc dữ liệu từ Kafka mà tôi đã giải thích trong các bài viết dưới đây, tôi khuyên bạn nên đọc chúng khi có thời gian.
+
+- [PySpark Đọc tệp Parquet vào DataFrame](https://sparkbyexamples.com/pyspark/pyspark-read-and-write-parquet-file/)
+
+- [DataFrame từ nguồn Avro](https://sparkbyexamples.com/spark/using-avro-data-files-from-spark-sql-2-4/)
+
+- [DataFrame bằng cách truyền dữ liệu từ Kafka](https://sparkbyexamples.com/spark/spark-streaming-kafka-consumer-example-in-json-format/)
+
+## Bài tập
+
+## Tài liệu tham khảo
+
+1. [Spark RDD](https://sparkbyexamples.com/pyspark-rdd)
+
+2. [Spark Properties](https://spark.apache.org/docs/latest/configuration.html)
+
+3. [Spark DataFrame](https://sparkbyexamples.com/pyspark/different-ways-to-create-dataframe-in-pyspark/)
 
 _ Edit by **Ngô Minh Toàn**_
