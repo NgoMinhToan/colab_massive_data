@@ -327,6 +327,15 @@ DataFrame là một kiểu dữ liệu collection phân tán, được tổ ch�
 
 ![Create DataFrame](https://ngominhtoan.github.io/colab_massive_data/week4/pic2.jpg)
 
+
+### *Các tính năng của DataFrame*
+
+- Khả năng xử lý dữ liệu có kích thước từ Kilobyte (Kb) đến Petabyte (PB) trên một cụm node đơn đến cụm lớn.
+- Hỗ trợ các định dạng dữ liệu (Avro, csv, …) và hệ thống lưu trữ khác nhau (HDFS, bảng HIVE, mysql, ....).
+- Tối ưu hóa hiện đại và tạo mã thông qua trình tối ưu hóa Spark SQL Catalyst  (tree transformation framework).
+- Có thể dễ dàng tích hợp với tất cả các công cụ và framework xử lý dữ liệu lớn thông qua Spark-Core.
+- Cung cấp API cho Python, Java, Scala và R.
+
 ### *Tạo DataFrame*
 
 #### **Tạo DataFrame từ RDD**
