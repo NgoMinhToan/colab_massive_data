@@ -947,6 +947,38 @@ empDF.alias("emp1").join(empDF.alias("emp2"), \
 
 ### Binary Classification
 
+**Phân loại nhị phân** (Binary classification) là nhiệm vụ phận loại các phần tử của một tập hợp các đối tượng ra thành 2 nhóm dựa trên cơ sở là chúng có một thuộc tính nào đó hay không (hay còn gọi là tiêu chí). Một số nhiệm vụ phân loại nhị phân điển hình:
+
+- Kiểm tra y khoa xem một bệnh nhân có bệnh nào đó hay không (thuộc tính để phân loại là căn bệnh đó)
+- Quản lý chất lượng trong nhà máy, ví dụ: xác định xem một sản phẩm làm ra là đủ tốt để bán chưa, hay nên loại bỏ nó (thuộc tính để phân loại là tính đủ tốt)
+- Xác định xem một trang hay một bài báo có nên nằm trong tập kết quả của một truy vấn hay không (thuộc tính là độ liên quan của bài báo - thường là sự hiện diện của một số từ nào đó trong bài báo đó)
+
+Phân loại nói chung là một trong những vấn đề được nghiên cứu trong khoa học máy tính với mục đích học tự động các hệ thống phân loại. Một số phương pháp thích hợp cho việc học phân loại nhị phân gồm có: cây quyết định, mạng Bayes, support vector machine, và mạng nơron.
+
+#### **Đánh giá bộ phân loại nhị phân**
+
+Để đánh giá độ hiệu quả của một xét nghiệm y khoa, người ta thường sử dụng các khái niệm độ nhạy và đặc trưng. Những khái niệm này rất hữu ích cho việc đánh giá bộ phân loại nhị phân. Giả sử chúng ta xét nghiệm xem một vài người nào đó có bệnh hay không.
+
+1. Một số người có bệnh, và kết quả xét nghiệm là dương tính (positive). Họ được gọi là các dương tính đúng.
+2. Một số người có bệnh, nhưng kết quả xét nghiệm âm tính (negative). Họ được gọi là các âm tính sai.
+3. Một số không có bệnh, và kết quả xét nghiệm cũng là âm tính. Họ được gọi là các âm tính đúng.
+4. Một số không có bệnh, nhưng kết quả xét nghiệm lại là dương tính. Họ được gọi là các dương tính sai.
+
+Tổng số người dương tính đúng, âm tính đúng, dương tính sai, âm tính sai chiếm 100% tổng số người được xét nghiệm.
+
+**Độ nhạy** (sensitivity) là tỉ lệ của số người bị bệnh được xác định đúng là có bệnh trên tổng số người bị bệnh, nghĩa là (dương tính đúng)/(dương tính đúng + âm tính sai). Nó có thể được coi là "xác suất xét nghiệm cho kết quả dương tính khi người được xét nghiệm có bị bệnh". Độ nhạy càng cao, càng ít khả năng bệnh không được phát hiện (hoặc, trong trường hợp quản lý chất lượng ở nhà máy, càng ít sản phẩm lỗi được đưa ra thị trường).
+
+**Đặc trưng** (specificity) là tỉ lệ của số người không bị bệnh có kết quả xét nghiệm âm tính trên tổng số người không có bệnh (thực), nghĩa là (âm tính đúng)/(âm tính đúng + dương tính sai). Nó còn được coi là xác suất xét nghiệm cho kết quả âm tính đối với người không có bệnh. Độ đặc trưng càng cao, càng ít người mạnh khỏe được coi là bị bệnh (hoặc trong trường hợp nhà máy, càng ít tiền bị tốn phí do loại bỏ các sản phẩm chất lượng tốt thay vì đem bán chúng).
+
+Về mặt lý thuyết, độ nhạy và đặc trưng là độc lập, tức là cả hai đều có thể đạt đến 100%. Trong thực tế, chúng ta phải đánh đổi cái này để được cái kia - cái này tốt lên thì cái kia xấu đi, không thể đạt được cả hai.
+
+Một điểm cần chú ý nữa, là độ nhạy và đặc trưng là độc lập với tỉ lệ giữa số cá thể âm tính và số cá thể dương tính. Tuy nhiên, giá trị của chúng thì lại phụ thuộc vào tổng số cá thể kiểm tra (population). Ví dụ: kiểm tra có kết quả: độ nhạy 99%, đặc trưng 99%.
+
+- Giả sử số người kiểm tra là 2000 người, trong đó 1000 có bệnh và 1000 khỏe mạnh. Như vậy, ta phát hiện đúng 990 người dương tính đúng, 990 người âm tính đúng, và 10 âm tính sai, 10 dương tính sai. Cuối cùng, tỉ lệ dự đoán trúng là 99% cho cả kết quả dương tính và âm tính. Như vậy, hệ thống này được coi là khá đáng tin cậy.
+- Giả sử số người kiểm tra là 2000 người, trong đó chỉ có 100 là thực sự bị bệnh. Giả sử ta có 99 dương tính đúng, 1 âm tính sai, 1881 âm tính đúng, và 19 dương tính sai. Trong số 19+99 người xét nghiệm dương tính, chỉ có 99 người thực sự có bệnh.
+
+Như vậy, tỉ lệ dự đoán trúng dương tính là 99/(99+19)= 84%, còn dự đoán trúng âm tính là 1881/(1881+1)= 99,9%. Nghĩa là, nếu bạn đi xét nghiệm được kết quả dương tính thì khả năng bạn bị bệnh là 84%, còn nếu kết quả là âm tính thì khả năng bạn bị bệnh chỉ là 1/1881, hay 0,05%.
+
 ```
 from pyspark.mllib.classification import LogisticRegressionWithSGD
 from numpy import array
@@ -989,6 +1021,10 @@ print("Mean Squared Error = " + str(MSE))
 
 ### Clustering
 
+**Phân tích cụm** (cluster analysis) là một tác vụ gom nhóm một tập các đối tượng theo cách các đối tượng cùng nhóm (gọi là cụm, cluster) sẽ có tính giống nhau (theo các đặc tính nào đó) hơn so với các đối tượng ngoài nhóm hoặc thuộc các nhóm khác. Phân tích cụm là một tác vụ chính của khai phá dữ liệu, và là một kỹ thuật phổ biến trong thống kê phân tích dữ liệu, được dùng trong nhiều lĩnh vực, bao gồm nhận dạng mẫu, phân tích ảnh, truy hồi thông tin, tin sinh học, nén dữ liệu, đồ họa máy tính và học máy.
+
+Phân tích cụm có nguồn gốc ở lĩnh vực nhân chủng học do Driver và Kroeber đề xuất năm 1932 và giới thiệu trong tâm lý học bởi Joseph Zubin năm 1938 và Robert Tryon năm 1939 cũng như được dùng khá nổi tiếng bởi Raymond Cattell bắt đầu từ năm 1943 để phân loại lý thuyết tính trạng trong lĩnh vực tâm lý học nhân cách.
+
 ```
 from pyspark.mllib.clustering import KMeans
 from numpy import array
@@ -1012,6 +1048,8 @@ print("Within Set Sum of Squared Error = " + str(WSSSE))
 ```
 
 ### Collaborative Filtering
+
+Thuật toán gợi ý
 
 ```
 from pyspark.mllib.recommendation import ALS
