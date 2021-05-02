@@ -2,7 +2,7 @@
 
 ## Tìm hiểu về bài toán Recommender Systems
 
-#### 1. Mục tiêu của recommender systems
+### 1. Mục tiêu của recommender systems
 
 Hệ thống gợi ý (Recommender systems hoặc Recommendation systems) là các thuật toán nhằm mục đích đề xuất các mục có liên quan cho người dùng, hỗ trợ ra quyết định, cung cấp giải pháp mà không phải trải qua quá trình tìm kiếm phức tạp.
 
@@ -10,11 +10,11 @@ Với sự nổi lên của Youtube, Amazon, Netflix và nhiều dịch vụ web
 
 ![Ảnh 1](https://ngominhtoan.github.io/colab_massive_data/RecommendSystem/img1.png)
 
-#### 2. Trình bày bài toán, mô hình giải quyết bài toán
+### 2. Trình bày bài toán, mô hình giải quyết bài toán
 
 Mục đích của hệ thống giới thiệu là đề xuất các mặt hàng có liên quan cho người dùng. Để đạt được nhiệm vụ này, tồn tại hai loại phương pháp chính: phương pháp lọc cộng tác (collaborative filtering) và phương pháp dựa trên nội dung (content based). Hãy thảo luận ngắn gọn về hai mô hình chính này.
 
-##### 2.1 Collaborative filtering
+#### 2.1 Collaborative filtering
 
 Phương pháp lọc cộng tác (collaboractive filtering) là phương pháp chỉ dựa trên các tương tác trong quá khứ được ghi lại giữa người dùng và các mặt hàng để đưa ra các đề xuất mới, đây là phương pháp gợi ý được triển khai rộng rãi nhất và thành công nhất trong thực tế. Những tương tác này được lưu trữ trong "ma trận user-item interactions". Sau đó sử dụng các tương tác giữa người dùng với các mục item này để phát hiện những người dùng tương tự và các item tương tự và đưa ra dự đoán dựa trên những khoảng cách ước tính này. Cho I là tập các đối tượng (Item) có thể được gợi ý, X là tập người dùng, u là một người dùng cụ thể trong tập X, và i là một đối tượng cụ thể trong I.
 
@@ -24,7 +24,7 @@ Phương pháp lọc cộng tác (collaboractive filtering) là phương pháp c
 
 Thế mạnh lớn nhất của kỹ thuật collaboractive filtering là chúng hoàn toàn độc lập với sự biểu diễn của các đối tượng đang được gợi ý, có thể làm việc tốt với các đối tượng phức tạp như âm thanh và phim. Chất lượng của kỹ thuật này phụ thuộc vào độ lớn dữ liệu lịch sử tương tác, thao tác của người dùng.
 
-##### 2.2 Content based
+#### 2.2 Content based
 
 Hệ thống gợi ý dựa theo nội dung (content based) là sự kế thừa và mở rộng của lĩnh vực nghiên cứu lọc thông tin. Không giống như các phương pháp cộng tác chỉ dựa vào tương tác giữa người dùng với item, các phương pháp dựa trên nội dung sử dụng thông tin bổ sung về người dùng hoặc mục. Trong hệ thống thì các đối tượng được biểu diễn bởi các đặc điểm liên quan tới chúng.
 
