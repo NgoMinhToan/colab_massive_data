@@ -943,7 +943,7 @@ empDF.alias("emp1").join(empDF.alias("emp2"), \
 
 3. [Spark DataFrame](https://sparkbyexamples.com/pyspark/different-ways-to-create-dataframe-in-pyspark/)
 
-## Machine leaning models on PySpark:
+## Machine leaning models on PySpark (MLLib in Python):
 
 ### Binary Classification
 
