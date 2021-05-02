@@ -90,7 +90,7 @@ Tạo Project trên Colab dùng Spark đọc vào một file văn bản và đ�
 
 Spark Properties kiểm soát hầu hết các cài đặt và được cấu hình riêng cho từng ứng dụng. Các properties được cài đặt trực tiếp qua SparkConf được đưa vào SparkContext. SparkConf cho phép bạn định cấu hình một số thuộc tính chung (ví dụ: URL chính và tên ứng dụng), giống như các cặp giá trị được đặt qua phương thức `set()`. Ví dụ: chúng ta có thể khởi tạo một ứng dụng với hai luồng như sau:
 
-```
+```python
 val conf = new SparkConf()
              .setMaster("local[2]")
              .setAppName("CountingSheep")
@@ -1051,7 +1051,7 @@ print("Within Set Sum of Squared Error = " + str(WSSSE))
 
 Thuật toán gợi ý
 
-```
+```python
 from pyspark.mllib.recommendation import ALS
 from numpy import array
 
