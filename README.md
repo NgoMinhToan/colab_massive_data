@@ -577,7 +577,7 @@ Tương tự, chúng ta có thể tạo DataFrame trong PySpark từ hầu hết
 
 ### _Xử lý dữ liệu với dataframe_
 
-**Select Column**
+#### **Select Column**
 
 Sử dụng select khi muốn thao tác với trường dữ liệu cụ thể trong dataframe
 
@@ -587,7 +587,7 @@ df.select(field_name_1, field_name_2) // trả về 1 dataframe với trường 
 df.select(df.columns[2:4])            // trả về 1 dataframe với trường dữ liệu từ cột 2 đến cột 3
 ```
 
-**WithColumn**
+#### **WithColumn**
 
 With column cho phép thao tác dữ liệu trực tiếp trên dataframe
 
@@ -598,7 +598,7 @@ df.withColumn("CopiedColumn",col("salary")* -1)       // tạo cột mới từ 
 df.withColumn("Country", lit("USA"))                  // khởi tạo giá trị cho cột mới
 ```
 
-**WithColumnRenamed**
+#### **WithColumnRenamed**
 
 Cho phép đổi tên cột trong dataframe
 
@@ -607,7 +607,7 @@ df.withColumnRenamed(existingName, newNam) // đổi tên cột
 
 ```
 
-**Collect dữ liệu**
+#### **Collect dữ liệu**
 
 Cho phép truy vấn dữ liệu trên bảng dataframe
 
@@ -658,7 +658,7 @@ Thay vào đó nên truy vấn dữ liệu trong phạm vị cột bằng cách 
 dataCollect = deptDF.select("dept_name").collect()
 ```
 
-**Filter**
+#### **Filter**
 
 Lọc dữ liệu dataframe
 
@@ -703,7 +703,7 @@ df.filter(df.state.isin(li)==False).show()
 
 ngoài ra còn có nhiều loại filter dựa trên từ bắt đầu, kết thúc, bao gồm, like, rlike(regrex like), ...
 
-**dropDuplicates**
+#### **dropDuplicates**
 
 Xóa giá trị giống nhau
 
@@ -739,7 +739,7 @@ df.dropDuplicates(["department","salary"]).show()
 +-------------+----------+------+
 ```
 
-**drop**
+#### **drop**
 
 Xóa cột
 
@@ -773,7 +773,7 @@ df.drop(["department","salary"])
 +-------------+
 ```
 
-**Join**
+#### **Join**
 
 Join các cột lại với nhau
 
@@ -801,7 +801,7 @@ Dept Dataset
 +---------+-------+
 ```
 
-_Inner Join_
+##### _Inner Join_
 
 ```
 empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"inner") \
@@ -818,7 +818,7 @@ empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"inner") \
 +------+--------+---------------+-----------+-----------+------+------+---------+-------+
 ```
 
-_Full Outer Join_
+##### _Full Outer Join_
 
 ```
 empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"outer") \
@@ -841,7 +841,7 @@ empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"fullouter") \
 +------+--------+---------------+-----------+-----------+------+------+---------+-------+
 ```
 
-_Left Outer Join_
+##### _Left Outer Join_
 
 ```
 empDF.join(deptDF,empDF("emp_dept_id") ==  deptDF("dept_id"),"left")
@@ -861,7 +861,7 @@ empDF.join(deptDF,empDF("emp_dept_id") ==  deptDF("dept_id"),"left")
 +------+--------+---------------+-----------+-----------+------+------+---------+-------+
 ```
 
-_Right Outer Join_
+##### _Right Outer Join_
 
 ```
 empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"right") \
@@ -881,7 +881,7 @@ empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"rightouter") \
 +------+--------+---------------+-----------+-----------+------+------+---------+-------+
 ```
 
-_Left Semi Join_
+##### _Left Semi Join_
 
 ```
 empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"leftsemi") \
@@ -899,7 +899,7 @@ leftsemi join
 +------+--------+---------------+-----------+-----------+------+------+
 ```
 
-_Left Anti Join_
+##### _Left Anti Join_
 
 ```
 empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"leftanti") \
@@ -912,7 +912,7 @@ empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"leftanti") \
 +------+-----+---------------+-----------+-----------+------+------+
 ```
 
-_PySpark Self Join_
+##### _PySpark Self Join_
 
 ```
 empDF.alias("emp1").join(empDF.alias("emp2"), \
