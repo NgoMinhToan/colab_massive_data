@@ -577,15 +577,363 @@ Tương tự, chúng ta có thể tạo DataFrame trong PySpark từ hầu hết
 
 ### _Xử lý dữ liệu với dataframe_
 
-#### Select
+**Select Column**
 
 Sử dụng select khi muốn thao tác với trường dữ liệu cụ thể trong dataframe
 
 ```
-df.select("*") // trả về 1 dataframe với tất cả các trường
+df.select("*")                        // trả về 1 dataframe với tất cả các trường
 df.select(field_name_1, field_name_2) // trả về 1 dataframe với trường dữ liệu có tên field_name_1 và field_name_2
-df.select(df.columns[2:4]) // trả về 1 dataframe với trường dữ liệu từ cột 2 đến cột 3
+df.select(df.columns[2:4])            // trả về 1 dataframe với trường dữ liệu từ cột 2 đến cột 3
 ```
+
+**WithColumn**
+
+With column cho phép thao tác dữ liệu trực tiếp trên dataframe
+
+```
+df.withColumn("salary",col("salary").cast("Integer")) // thay đổi dữ liệu
+df.withColumn("salary",col("salary")*100)             // cập nhật dữ liệu
+df.withColumn("CopiedColumn",col("salary")* -1)       // tạo cột mới từ cột có sẵn
+df.withColumn("Country", lit("USA"))                  // khởi tạo giá trị cho cột mới
+```
+
+**WithColumnRenamed**
+
+Cho phép đổi tên cột trong dataframe
+
+```
+df.withColumnRenamed(existingName, newNam) // đổi tên cột
+
+```
+
+**Collect dữ liệu**
+
+Cho phép truy vấn dữ liệu trên bảng dataframe
+
+```
+import pyspark
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName('SparkByExamples.com').getOrCreate()
+
+dept = [("Finance",10), \
+    ("Marketing",20), \
+    ("Sales",30), \
+    ("IT",40) \
+  ]
+deptColumns = ["dept_name","dept_id"]
+deptDF = spark.createDataFrame(data=dept, schema = deptColumns)
+deptDF.show(truncate=False)
+```
+
+```
++---------+-------+
+|dept_name|dept_id|
++---------+-------+
+|Finance  |10     |
+|Marketing|20     |
+|Sales    |30     |
+|IT       |40     |
++---------+-------+
+```
+
+```
+dataCollect = deptDF.collect()
+print(dataCollect)
+```
+
+```
+[Row(dept_name='Finance', dept_id=10),
+Row(dept_name='Marketing', dept_id=20),
+Row(dept_name='Sales', dept_id=30),
+Row(dept_name='IT', dept_id=40)]
+```
+
+collect() lên tránh được sử dụng thường xuyên nhất là trong các dataframe có dữ liệu lớn vì sẽ có nguy cơ bị tràn bộ nhớ
+
+Thay vào đó nên truy vấn dữ liệu trong phạm vị cột bằng cách kết hợp với select()
+
+```
+dataCollect = deptDF.select("dept_name").collect()
+```
+
+**Filter**
+
+Lọc dữ liệu dataframe
+
+```
+# Using equals condition
+df.filter(df.state == "OH").show(truncate=False)
+
++----------------------+------------------+-----+------+
+|name                  |languages         |state|gender|
++----------------------+------------------+-----+------+
+|[James, , Smith]      |[Java, Scala, C++]|OH   |M     |
+|[Julia, , Williams]   |[CSharp, VB]      |OH   |F     |
+|[Mike, Mary, Williams]|[Python, VB]      |OH   |M     |
++----------------------+------------------+-----+------+
+
+# not equals condition
+df.filter(df.state != "OH") \
+    .show(truncate=False)
+df.filter(~(df.state == "OH")) \
+    .show(truncate=False)
+```
+
+Dựa trên giá trị trong list
+
+```
+#Filter IS IN List values
+li=["OH","CA","DE"]
+df.filter(df.state.isin(li)).show() // hàm isin() check các giá trị có trong list với giá trị hiện tại
++--------------------+------------------+-----+------+
+|                name|         languages|state|gender|
++--------------------+------------------+-----+------+
+|    [James, , Smith]|[Java, Scala, C++]|   OH|     M|
+| [Julia, , Williams]|      [CSharp, VB]|   OH|     F|
+|[Mike, Mary, Will...|      [Python, VB]|   OH|     M|
++--------------------+------------------+-----+------+
+
+# Filter NOT IS IN List values
+#These show all records with NY (NY is not part of the list)
+df.filter(~df.state.isin(li)).show()
+df.filter(df.state.isin(li)==False).show()
+```
+
+ngoài ra còn có nhiều loại filter dựa trên từ bắt đầu, kết thúc, bao gồm, like, rlike(regrex like), ...
+
+**dropDuplicates**
+
+Xóa giá trị giống nhau
+
+```
++-------------+----------+------+
+|employee_name|department|salary|
++-------------+----------+------+
+|James        |Sales     |3000  |
+|Michael      |Sales     |4600  |
+|Robert       |Sales     |4100  |
+|Maria        |Finance   |3000  |
+|James        |Sales     |3000  |
+|Scott        |Finance   |3300  |
+|Jen          |Finance   |3900  |
+|Jeff         |Marketing |3000  |
+|Kumar        |Marketing |2000  |
+|Saif         |Sales     |4100  |
++-------------+----------+------+
+
+df.dropDuplicates(["department","salary"]).show()
+
++-------------+----------+------+
+|employee_name|department|salary|
++-------------+----------+------+
+|Jen          |Finance   |3900  |
+|Maria        |Finance   |3000  |
+|Scott        |Finance   |3300  |
+|Michael      |Sales     |4600  |
+|Kumar        |Marketing |2000  |
+|Robert       |Sales     |4100  |
+|James        |Sales     |3000  |
+|Jeff         |Marketing |3000  |
++-------------+----------+------+
+```
+
+**drop**
+
+Xóa cột
+
+```
++-------------+----------+------+
+|employee_name|department|salary|
++-------------+----------+------+
+|Jen          |Finance   |3900  |
+|Maria        |Finance   |3000  |
+|Scott        |Finance   |3300  |
+|Michael      |Sales     |4600  |
+|Kumar        |Marketing |2000  |
+|Robert       |Sales     |4100  |
+|James        |Sales     |3000  |
+|Jeff         |Marketing |3000  |
++-------------+----------+------+
+
+df.drop(["department","salary"])
+
++-------------+
+|employee_name|
++-------------+
+|Jen          |
+|Maria        |
+|Scott        |
+|Michael      |
+|Kumar        |
+|Robert       |
+|James        |
+|Jeff         |
++-------------+
+```
+
+**Join**
+
+Join các cột lại với nhau
+
+```
+Emp Dataset
++------+--------+---------------+-----------+-----------+------+------+
+|emp_id|name    |superior_emp_id|year_joined|emp_dept_id|gender|salary|
++------+--------+---------------+-----------+-----------+------+------+
+|1     |Smith   |-1             |2018       |10         |M     |3000  |
+|2     |Rose    |1              |2010       |20         |M     |4000  |
+|3     |Williams|1              |2010       |10         |M     |1000  |
+|4     |Jones   |2              |2005       |10         |F     |2000  |
+|5     |Brown   |2              |2010       |40         |      |-1    |
+|6     |Brown   |2              |2010       |50         |      |-1    |
++------+--------+---------------+-----------+-----------+------+------+
+
+Dept Dataset
++---------+-------+
+|dept_name|dept_id|
++---------+-------+
+|Finance  |10     |
+|Marketing|20     |
+|Sales    |30     |
+|IT       |40     |
++---------+-------+
+```
+
+_Inner Join_
+
+```
+empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"inner") \
+     .show(truncate=False)
+
++------+--------+---------------+-----------+-----------+------+------+---------+-------+
+|emp_id|name    |superior_emp_id|year_joined|emp_dept_id|gender|salary|dept_name|dept_id|
++------+--------+---------------+-----------+-----------+------+------+---------+-------+
+|1     |Smith   |-1             |2018       |10         |M     |3000  |Finance  |10     |
+|2     |Rose    |1              |2010       |20         |M     |4000  |Marketing|20     |
+|3     |Williams|1              |2010       |10         |M     |1000  |Finance  |10     |
+|4     |Jones   |2              |2005       |10         |F     |2000  |Finance  |10     |
+|5     |Brown   |2              |2010       |40         |      |-1    |IT       |40     |
++------+--------+---------------+-----------+-----------+------+------+---------+-------+
+```
+
+_Full Outer Join_
+
+```
+empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"outer") \
+    .show(truncate=False)
+empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"full") \
+    .show(truncate=False)
+empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"fullouter") \
+    .show(truncate=False)
+
++------+--------+---------------+-----------+-----------+------+------+---------+-------+
+|emp_id|name    |superior_emp_id|year_joined|emp_dept_id|gender|salary|dept_name|dept_id|
++------+--------+---------------+-----------+-----------+------+------+---------+-------+
+|2     |Rose    |1              |2010       |20         |M     |4000  |Marketing|20     |
+|5     |Brown   |2              |2010       |40         |      |-1    |IT       |40     |
+|1     |Smith   |-1             |2018       |10         |M     |3000  |Finance  |10     |
+|3     |Williams|1              |2010       |10         |M     |1000  |Finance  |10     |
+|4     |Jones   |2              |2005       |10         |F     |2000  |Finance  |10     |
+|6     |Brown   |2              |2010       |50         |      |-1    |null     |null   |
+|null  |null    |null           |null       |null       |null  |null  |Sales    |30     |
++------+--------+---------------+-----------+-----------+------+------+---------+-------+
+```
+
+_Left Outer Join_
+
+```
+empDF.join(deptDF,empDF("emp_dept_id") ==  deptDF("dept_id"),"left")
+    .show(false)
+  empDF.join(deptDF,empDF("emp_dept_id") ==  deptDF("dept_id"),"leftouter")
+    .show(false)
+
++------+--------+---------------+-----------+-----------+------+------+---------+-------+
+|emp_id|name    |superior_emp_id|year_joined|emp_dept_id|gender|salary|dept_name|dept_id|
++------+--------+---------------+-----------+-----------+------+------+---------+-------+
+|1     |Smith   |-1             |2018       |10         |M     |3000  |Finance  |10     |
+|2     |Rose    |1              |2010       |20         |M     |4000  |Marketing|20     |
+|3     |Williams|1              |2010       |10         |M     |1000  |Finance  |10     |
+|4     |Jones   |2              |2005       |10         |F     |2000  |Finance  |10     |
+|5     |Brown   |2              |2010       |40         |      |-1    |IT       |40     |
+|6     |Brown   |2              |2010       |50         |      |-1    |null     |null   |
++------+--------+---------------+-----------+-----------+------+------+---------+-------+
+```
+
+_Right Outer Join_
+
+```
+empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"right") \
+   .show(truncate=False)
+empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"rightouter") \
+   .show(truncate=False)
+
++------+--------+---------------+-----------+-----------+------+------+---------+-------+
+|emp_id|name    |superior_emp_id|year_joined|emp_dept_id|gender|salary|dept_name|dept_id|
++------+--------+---------------+-----------+-----------+------+------+---------+-------+
+|4     |Jones   |2              |2005       |10         |F     |2000  |Finance  |10     |
+|3     |Williams|1              |2010       |10         |M     |1000  |Finance  |10     |
+|1     |Smith   |-1             |2018       |10         |M     |3000  |Finance  |10     |
+|2     |Rose    |1              |2010       |20         |M     |4000  |Marketing|20     |
+|null  |null    |null           |null       |null       |null  |null  |Sales    |30     |
+|5     |Brown   |2              |2010       |40         |      |-1    |IT       |40     |
++------+--------+---------------+-----------+-----------+------+------+---------+-------+
+```
+
+_Left Semi Join_
+
+```
+empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"leftsemi") \
+   .show(truncate=False)
+
+leftsemi join
++------+--------+---------------+-----------+-----------+------+------+
+|emp_id|name    |superior_emp_id|year_joined|emp_dept_id|gender|salary|
++------+--------+---------------+-----------+-----------+------+------+
+|1     |Smith   |-1             |2018       |10         |M     |3000  |
+|2     |Rose    |1              |2010       |20         |M     |4000  |
+|3     |Williams|1              |2010       |10         |M     |1000  |
+|4     |Jones   |2              |2005       |10         |F     |2000  |
+|5     |Brown   |2              |2010       |40         |      |-1    |
++------+--------+---------------+-----------+-----------+------+------+
+```
+
+_Left Anti Join_
+
+```
+empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"leftanti") \
+   .show(truncate=False)
+
++------+-----+---------------+-----------+-----------+------+------+
+|emp_id|name |superior_emp_id|year_joined|emp_dept_id|gender|salary|
++------+-----+---------------+-----------+-----------+------+------+
+|6     |Brown|2              |2010       |50         |      |-1    |
++------+-----+---------------+-----------+-----------+------+------+
+```
+
+_PySpark Self Join_
+
+```
+empDF.alias("emp1").join(empDF.alias("emp2"), \
+    col("emp1.superior_emp_id") == col("emp2.emp_id"),"inner") \
+    .select(col("emp1.emp_id"),col("emp1.name"), \
+      col("emp2.emp_id").alias("superior_emp_id"), \
+      col("emp2.name").alias("superior_emp_name")) \
+   .show(truncate=False)
+
++------+--------+---------------+-----------------+
+|emp_id|name    |superior_emp_id|superior_emp_name|
++------+--------+---------------+-----------------+
+|2     |Rose    |1              |Smith            |
+|3     |Williams|1              |Smith            |
+|4     |Jones   |2              |Rose             |
+|5     |Brown   |2              |Rose             |
+|6     |Brown   |2              |Rose             |
++------+--------+---------------+-----------------+
+```
+
+**_Ngoài ra còn nhiều hàm khác không phổ biển như: groupBy(), orderBy(), sortBy(), union(), unionAll(), map(), flatMap(), foreach(), fillna(), dropna()_**
 
 ### Tài liệu tham khảo
 
