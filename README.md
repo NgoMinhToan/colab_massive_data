@@ -34,6 +34,5 @@
 
 ###### Nội dung:
 
-1.
-2.
-3.
+1. Tìm hiểu về bài toán Recommender Systems
+2. Tài liệu tham khảo
