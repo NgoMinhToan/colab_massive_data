@@ -99,7 +99,7 @@ val sc = new SparkContext(conf)
 
 Các thuộc tính liên qua đến thời gian cần được cấu hình với các đơn vị thời gian nhất định
 
-```
+```python
 25ms (milliseconds)
 5s (seconds)
 10m or 10min (minutes)
@@ -110,7 +110,7 @@ Các thuộc tính liên qua đến thời gian cần được cấu hình với
 
 Tương tự với thời gian, kính thước bao gồm các đơn vị sau
 
-```
+```python
 1b (bytes)
 1k or 1kb (kibibytes = 1024 bytes)
 1m or 1mb (mebibytes = 1024 kibibytes)
@@ -125,7 +125,7 @@ Có thể cấu hình ứng dụng sau khi đã khởi động hay vì lý do n�
 
 Trước khi chạy cần tạo một config rỗng
 
-```
+```python
 val sc = new SparkContext(new SparkConf())
 ```
 
@@ -250,7 +250,7 @@ RDD được tạo ra chủ yếu theo hai cách khác nhau,
 
 - Trước khi chúng ta xem xét các ví dụ, trước tiên hãy khởi tạo SparkSession bằng phương thức mẫu xây dựng được định nghĩa trong lớp SparkSession. Trong khi khởi tạo, chúng ta cần cung cấp tên chính và ứng dụng như hình bên dưới. Trong ứng dụng thời gian thực, bạn sẽ vượt qua master từ spark-submit thay vì hardcoding trên ứng dụng Spark.
 
-```
+```python
 from pyspark.sql import SparkSession
 spark:SparkSession = SparkSession.builder()
       .master("local[1]")
@@ -276,7 +276,7 @@ Bằng cách sử dụng `parallelize()` hàm của `SparkContext ( sparkContext
 
 #### **RDD từ danh sách**
 
-```
+```python
 # Create RDD from parallelize
 data = [1,2,3,4,5,6,7,8,9,10,11,12]
 rdd=spark.sparkContext.parallelize(data)
@@ -288,7 +288,7 @@ rdd=spark.sparkContext.parallelize(data)
 
 Sử dụng [phương thức textFile (), chúng ta có thể đọc tệp văn bản](https://sparkbyexamples.com/spark/spark-read-text-file-rdd-dataframe/) (.txt) vào RDD.
 
-```
+```python
 #Create RDD from external Data source
 rdd2 = spark.sparkContext.textFile("/path/textFile.txt")
 ```
@@ -297,7 +297,7 @@ rdd2 = spark.sparkContext.textFile("/path/textFile.txt")
 
 [Hàm wholeTextFiles ()](https://sparkbyexamples.com/spark/spark-read-text-file-rdd-dataframe/) trả về một [PairRDD](https://sparkbyexamples.com/apache-spark-rdd/spark-pair-rdd-functions/) với khóa là đường dẫn tệp và giá trị là nội dung tệp.
 
-```
+```python
 #Reads entire file into a RDD as single record.
 rdd3 = spark.sparkContext.wholeTextFiles("/path/textFile.txt")
 ```
@@ -308,7 +308,7 @@ Bên cạnh việc sử dụng các tệp văn bản, chúng ta cũng có thể 
 
 Sử dụng `emptyRDD()` phương thức trên sparkContext, chúng ta có thể [tạo một RDD không có dữ liệu](https://sparkbyexamples.com/spark/spark-how-to-create-an-empty-rdd/) . Phương pháp này tạo ra một RDD trống không có phân vùng.
 
-```
+```python
 # Creates empty RDD with no partition
 rdd = spark.sparkContext.emptyRDD
 # rddString = spark.sparkContext.emptyRDD[String]
@@ -318,7 +318,7 @@ rdd = spark.sparkContext.emptyRDD
 
 Đôi khi, chúng ta có thể cần ghi RDD trống vào các tệp theo phân vùng, Trong trường hợp này, bạn nên tạo RDD trống có phân vùng.
 
-```
+```python
 #Create empty RDD with partition
 rdd2 = spark.sparkContext.parallelize([],10) #This creates 10 partitions
 ```
@@ -329,7 +329,7 @@ Khi chúng ta sử dụng `parallelize()` hoặc `textFile()` hoặc `wholeTextF
 
 **getNumPartitions ()** - Đây là một hàm RDD trả về một số phân vùng mà tập dữ liệu của chúng tôi được chia thành.
 
-```
+```python
 print("initial partition count:"+str(rdd.getNumPartitions()))
 #Outputs: initial partition count:2
 ```
@@ -342,7 +342,7 @@ print("initial partition count:"+str(rdd.getNumPartitions()))
 
 Cả hai hàm đều lấy số lượng phân vùng để phân vùng lại rdd như hình dưới đây. Lưu ý rằng [repartition()](https://sparkbyexamples.com/pyspark/pyspark-repartition-vs-coalesce/) phương pháp là một hoạt động rất tốn kém vì nó xáo trộn dữ liệu từ tất cả các nút trong một cụm.
 
-```
+```python
 reparRdd = rdd.repartition(4)
 print("re-partition count:"+str(reparRdd.getNumPartitions()))
 #Outputs: "re-partition count:4
@@ -364,13 +364,13 @@ Trong phần Chuyển đổi PySpark RDD của hướng dẫn này, tôi sẽ gi
 
 Đầu tiên, tạo một RDD bằng cách đọc một tệp văn bản. Tệp văn bản được sử dụng ở đây có sẵn tại dự án [GitHub](https://github.com/spark-examples/spark-scala-examples/blob/master/src/main/resources/test.txt) .
 
-```
+```python
 rdd = spark.sparkContext.textFile("/tmp/test.txt")
 ```
 
 **flatMap** - `flatMap()` phép biến đổi làm phẳng RDD sau khi áp dụng hàm và trả về một RDD mới. Trong ví dụ dưới đây, đầu tiên, nó chia từng bản ghi theo không gian trong RDD và cuối cùng làm phẳng nó. Kết quả RDD bao gồm một từ duy nhất trên mỗi bản ghi.
 
-```
+```python
 rdd2 = rdd.flatMap(lambda x: x.split(" "))
 ```
 
@@ -378,19 +378,19 @@ rdd2 = rdd.flatMap(lambda x: x.split(" "))
 
 Trong ví dụ đếm từ của chúng tôi, chúng tôi đang thêm một cột mới với giá trị 1 cho mỗi từ, kết quả của RDD là `PairRDDFunctions` chứa các cặp khóa-giá trị, từ thuộc loại Chuỗi là Khóa và 1 thuộc loại Int là giá trị.
 
-```
+```python
 rdd3 = rdd2.map(lambda x: (x,1))
 ```
 
 **ReduceByKey** - `reduceByKey()` hợp nhất các giá trị cho mỗi khóa với chức năng được chỉ định. Trong ví dụ của chúng tôi, nó làm giảm chuỗi từ bằng cách áp dụng hàm sum trên giá trị. Kết quả RDD của chúng tôi chứa các từ duy nhất và số lượng của chúng.
 
-```
+```python
 rdd5 = rdd4.reduceByKey(lambda a,b: a+b)
 ```
 
 **sortByKey** - `sortByKey()` phép biến đổi được sử dụng để sắp xếp các phần tử RDD trên khóa. Trong ví dụ của chúng tôi, đầu tiên, chúng tôi chuyển đổi RDD [(String, Int]) thành RDD [(Int, String]) bằng cách sử dụng phép biến đổi bản đồ và áp dụng sortByKey mà lý tưởng là sắp xếp trên một giá trị số nguyên. Và cuối cùng, câu lệnh foreach với println trả về tất cả các từ trong RDD và số lượng của chúng là cặp khóa-giá trị
 
-```
+```python
 rdd6 = rdd5.map(lambda x: (x[1],x[0])).sortByKey()
 #Print rdd6 result to console
 print(rdd6.collect())
@@ -398,7 +398,7 @@ print(rdd6.collect())
 
 **filter()** được sử dụng để lọc các bản ghi trong RDD. Trong ví dụ của chúng tôi, chúng tôi đang lọc tất cả các từ bắt đầu bằng “a”.
 
-```
+```python
 rdd4 = rdd3.filter(lambda x : 'an' in x[1])
 print(rdd4.collect())
 ```
@@ -425,7 +425,7 @@ DataFrame là một kiểu dữ liệu collection phân tán, được tổ ch�
 
 Một cách dễ dàng để tạo PySpark DataFrame là từ một RDD hiện có. đầu tiên, hãy tạo một Spark RDD từ một Danh sách bộ sưu tập bằng cách gọi hàm song song () từ SparkContext . Chúng tôi sẽ cần đối tượng rdd này cho tất cả các ví dụ của chúng tôi bên dưới.
 
-```
+```python
 spark = SparkSession.builder.appName('SparkByExamples.com').getOrCreate()
 rdd = spark.sparkContext.parallelize(data)
 ```
@@ -434,14 +434,14 @@ rdd = spark.sparkContext.parallelize(data)
 
 Phương thức toDF () của PySpark RDD được sử dụng để tạo DataFrame từ RDD hiện có. Vì RDD không có cột, DataFrame được tạo với tên cột mặc định “\_1” và “\_2” vì chúng ta có hai cột.
 
-```
+```python
 dfFromRDD1 = rdd.toDF()
 dfFromRDD1.printSchema()
 ```
 
 printchema () cho ra kết quả bên dưới.
 
-```
+```python
 root
  |-- _1: string (nullable = true)
  |-- _2: string (nullable = true)
@@ -449,7 +449,7 @@ root
 
 Nếu bạn muốn cung cấp tên cột cho toDF() phương pháp sử dụng DataFrame với tên cột làm đối số như hình dưới đây.
 
-```
+```python
 columns = ["language","users_count"]
 dfFromRDD1 = rdd.toDF(columns)
 dfFromRDD1.printSchema()
@@ -457,7 +457,7 @@ dfFromRDD1.printSchema()
 
 Điều này tạo ra lược đồ của DataFrame với các tên cột.
 
-```
+```python
 root
  |-- language: string (nullable = true)
  |-- users: string (nullable = true)
@@ -469,7 +469,7 @@ Theo mặc định, kiểu dữ liệu của các cột này suy ra kiểu dữ 
 
 Sử dụng createDataFrame () từ SparkSession là một cách khác để tạo và nó lấy đối tượng rdd làm đối số. và chuỗi với toDF () để chỉ định tên cho các cột.
 
-```
+```python
 dfFromRDD2 = spark.createDataFrame(rdd).toDF(*columns)
 ```
 
@@ -481,7 +481,7 @@ Trong phần này, chúng ta sẽ xem cách tạo PySpark DataFrame từ một d
 
 Gọi `createDataFrame()` from `SparkSession` là một cách khác để tạo PySpark DataFrame, nó lấy một đối tượng danh sách làm đối số. và chuỗi với `0toDF()` để chỉ định tên cho các cột.
 
-```
+```python
 dfFromData2 = spark.createDataFrame(data).toDF(*columns)
 ```
 
@@ -489,7 +489,7 @@ dfFromData2 = spark.createDataFrame(data).toDF(*columns)
 
 `createDataFrame()` có một chữ ký khác trong PySpark lấy bộ sưu tập kiểu Hàng và lược đồ cho tên cột làm đối số. Để sử dụng điều này, trước tiên chúng ta cần chuyển đổi đối tượng “dữ liệu” từ danh sách sang danh sách Hàng.
 
-```
+```python
 rowData = map(lambda x: Row(*x), data)
 dfFromData3 = spark.createDataFrame(rowData,columns)
 ```
@@ -498,7 +498,7 @@ dfFromData3 = spark.createDataFrame(rowData,columns)
 
 Nếu bạn muốn chỉ định tên cột cùng với kiểu dữ liệu của chúng, trước tiên bạn nên tạo lược đồ StructType và sau đó gán nó trong khi tạo DataFrame.
 
-```
+```python
 from pyspark.sql.types import StructType,StructField, StringType, IntegerType
 data2 = [("James","","Smith","36636","M",3000),
     ("Michael","Rose","","40288","M",4000),
@@ -523,7 +523,7 @@ df.show(truncate=False)
 
 Điều này dẫn đến sản lượng thấp hơn.
 
-```
+```python
 root
  |-- firstname: string (nullable = true)
  |-- middlename: string (nullable = true)
@@ -553,7 +553,7 @@ PySpark theo mặc định hỗ trợ nhiều định dạng dữ liệu mà kh�
 
 Sử dụng `csv()` phương thức của `DataFrameReader` đối tượng để tạo DataFrame từ tệp CSV. bạn cũng có thể cung cấp các tùy chọn như dấu phân cách sẽ sử dụng, cho dù bạn đã trích dẫn dữ liệu, định dạng ngày tháng, lược đồ suy luận, v.v. Vui lòng tham khảo PySpark Read CSV thành DataFrame
 
-```
+```python
 df2 = spark.read.csv("/src/resources/file.csv")
 ```
 
@@ -561,7 +561,7 @@ df2 = spark.read.csv("/src/resources/file.csv")
 
 Tương tự, bạn cũng có thể tạo DataFrame bằng cách đọc từ tệp Văn bản, sử dụng `text()` phương thức của DataFrameReader để làm như vậy.
 
-```
+```python
 df2 = spark.read.text("/src/resources/file.txt")
 ```
 
@@ -569,7 +569,7 @@ df2 = spark.read.text("/src/resources/file.txt")
 
 PySpark cũng được sử dụng để xử lý các tệp dữ liệu bán cấu trúc như định dạng JSON. bạn có thể sử dụng json()phương thức của DataFrameReader để đọc tệp `JSON` vào DataFrame. Dưới đây là một ví dụ đơn giản.
 
-```
+```python
 df2 = spark.read.json("/src/resources/file.json")
 ```
 
@@ -581,7 +581,7 @@ Tương tự, chúng ta có thể tạo DataFrame trong PySpark từ hầu hết
 
 Sử dụng select khi muốn thao tác với trường dữ liệu cụ thể trong dataframe
 
-```
+```python
 df.select("*")                        // trả về 1 dataframe với tất cả các trường
 df.select(field_name_1, field_name_2) // trả về 1 dataframe với trường dữ liệu có tên field_name_1 và field_name_2
 df.select(df.columns[2:4])            // trả về 1 dataframe với trường dữ liệu từ cột 2 đến cột 3
@@ -591,7 +591,7 @@ df.select(df.columns[2:4])            // trả về 1 dataframe với trường 
 
 With column cho phép thao tác dữ liệu trực tiếp trên dataframe
 
-```
+```python
 df.withColumn("salary",col("salary").cast("Integer")) // thay đổi dữ liệu
 df.withColumn("salary",col("salary")*100)             // cập nhật dữ liệu
 df.withColumn("CopiedColumn",col("salary")* -1)       // tạo cột mới từ cột có sẵn
@@ -602,7 +602,7 @@ df.withColumn("Country", lit("USA"))                  // khởi tạo giá trị
 
 Cho phép đổi tên cột trong dataframe
 
-```
+```python
 df.withColumnRenamed(existingName, newNam) // đổi tên cột
 
 ```
@@ -611,7 +611,7 @@ df.withColumnRenamed(existingName, newNam) // đổi tên cột
 
 Cho phép truy vấn dữ liệu trên bảng dataframe
 
-```
+```python
 import pyspark
 from pyspark.sql import SparkSession
 
@@ -627,7 +627,7 @@ deptDF = spark.createDataFrame(data=dept, schema = deptColumns)
 deptDF.show(truncate=False)
 ```
 
-```
+```python
 +---------+-------+
 |dept_name|dept_id|
 +---------+-------+
@@ -638,12 +638,12 @@ deptDF.show(truncate=False)
 +---------+-------+
 ```
 
-```
+```python
 dataCollect = deptDF.collect()
 print(dataCollect)
 ```
 
-```
+```python
 [Row(dept_name='Finance', dept_id=10),
 Row(dept_name='Marketing', dept_id=20),
 Row(dept_name='Sales', dept_id=30),
@@ -654,7 +654,7 @@ collect() lên tránh được sử dụng thường xuyên nhất là trong cá
 
 Thay vào đó nên truy vấn dữ liệu trong phạm vị cột bằng cách kết hợp với select()
 
-```
+```python
 dataCollect = deptDF.select("dept_name").collect()
 ```
 
@@ -662,7 +662,7 @@ dataCollect = deptDF.select("dept_name").collect()
 
 Lọc dữ liệu dataframe
 
-```
+```python
 # Using equals condition
 df.filter(df.state == "OH").show(truncate=False)
 
@@ -683,7 +683,7 @@ df.filter(~(df.state == "OH")) \
 
 Dựa trên giá trị trong list
 
-```
+```python
 #Filter IS IN List values
 li=["OH","CA","DE"]
 df.filter(df.state.isin(li)).show() // hàm isin() check các giá trị có trong list với giá trị hiện tại
@@ -707,7 +707,7 @@ ngoài ra còn có nhiều loại filter dựa trên từ bắt đầu, kết th
 
 Xóa giá trị giống nhau
 
-```
+```python
 +-------------+----------+------+
 |employee_name|department|salary|
 +-------------+----------+------+
@@ -743,7 +743,7 @@ df.dropDuplicates(["department","salary"]).show()
 
 Xóa cột
 
-```
+```python
 +-------------+----------+------+
 |employee_name|department|salary|
 +-------------+----------+------+
@@ -777,7 +777,7 @@ df.drop(["department","salary"])
 
 Join các cột lại với nhau
 
-```
+```python
 Emp Dataset
 +------+--------+---------------+-----------+-----------+------+------+
 |emp_id|name    |superior_emp_id|year_joined|emp_dept_id|gender|salary|
@@ -803,7 +803,7 @@ Dept Dataset
 
 ##### _Inner Join_
 
-```
+```python
 empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"inner") \
      .show(truncate=False)
 
@@ -820,7 +820,7 @@ empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"inner") \
 
 ##### _Full Outer Join_
 
-```
+```python
 empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"outer") \
     .show(truncate=False)
 empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"full") \
@@ -843,7 +843,7 @@ empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"fullouter") \
 
 ##### _Left Outer Join_
 
-```
+```python
 empDF.join(deptDF,empDF("emp_dept_id") ==  deptDF("dept_id"),"left")
     .show(false)
   empDF.join(deptDF,empDF("emp_dept_id") ==  deptDF("dept_id"),"leftouter")
@@ -863,7 +863,7 @@ empDF.join(deptDF,empDF("emp_dept_id") ==  deptDF("dept_id"),"left")
 
 ##### _Right Outer Join_
 
-```
+```python
 empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"right") \
    .show(truncate=False)
 empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"rightouter") \
@@ -883,7 +883,7 @@ empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"rightouter") \
 
 ##### _Left Semi Join_
 
-```
+```python
 empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"leftsemi") \
    .show(truncate=False)
 
@@ -901,7 +901,7 @@ leftsemi join
 
 ##### _Left Anti Join_
 
-```
+```python
 empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"leftanti") \
    .show(truncate=False)
 
@@ -914,7 +914,7 @@ empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"leftanti") \
 
 ##### _PySpark Self Join_
 
-```
+```python
 empDF.alias("emp1").join(empDF.alias("emp2"), \
     col("emp1.superior_emp_id") == col("emp2.emp_id"),"inner") \
     .select(col("emp1.emp_id"),col("emp1.name"), \
@@ -979,7 +979,7 @@ Một điểm cần chú ý nữa, là độ nhạy và đặc trưng là độc
 
 Như vậy, tỉ lệ dự đoán trúng dương tính là 99/(99+19)= 84%, còn dự đoán trúng âm tính là 1881/(1881+1)= 99,9%. Nghĩa là, nếu bạn đi xét nghiệm được kết quả dương tính thì khả năng bạn bị bệnh là 84%, còn nếu kết quả là âm tính thì khả năng bạn bị bệnh chỉ là 1/1881, hay 0,05%.
 
-```
+```python
 from pyspark.mllib.classification import LogisticRegressionWithSGD
 from numpy import array
 
@@ -1001,7 +1001,7 @@ print("Training Error = " + str(trainErr))
 
 "Hồi quy tuyến tính" là một phương pháp thống kê để hồi quy dữ liệu với biến phụ thuộc có giá trị liên tục trong khi các biến độc lập có thể có một trong hai giá trị liên tục hoặc là giá trị phân loại. Nói cách khác "Hồi quy tuyến tính" là một phương pháp để dự đoán biến phụ thuộc (Y) dựa trên giá trị của biến độc lập (X). Nó có thể được sử dụng cho các trường hợp chúng ta muốn dự đoán một số lượng liên tục. Ví dụ, dự đoán giao thông ở một cửa hàng bán lẻ, dự đoán thời gian người dùng dừng lại một trang nào đó hoặc số trang đã truy cập vào một website nào đó v.v..
 
-```
+```python
 from pyspark.mllib.regression import LinearRegressionWithSGD
 from numpy import array
 
@@ -1025,7 +1025,7 @@ print("Mean Squared Error = " + str(MSE))
 
 Phân tích cụm có nguồn gốc ở lĩnh vực nhân chủng học do Driver và Kroeber đề xuất năm 1932 và giới thiệu trong tâm lý học bởi Joseph Zubin năm 1938 và Robert Tryon năm 1939 cũng như được dùng khá nổi tiếng bởi Raymond Cattell bắt đầu từ năm 1943 để phân loại lý thuyết tính trạng trong lĩnh vực tâm lý học nhân cách.
 
-```
+```python
 from pyspark.mllib.clustering import KMeans
 from numpy import array
 from math import sqrt
@@ -1070,7 +1070,7 @@ MSE = ratesAndPreds.map(lambda r: (r[1][0] - r[1][1])**2).reduce(lambda x, y: x 
 print("Mean Squared Error = " + str(MSE))
 ```
 
-```
+```python
 # Build the recommendation model using Alternating Least Squares based on implicit ratings
 model = ALS.trainImplicit(ratings, 1, 20)
 ```
