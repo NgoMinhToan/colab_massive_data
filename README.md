@@ -31,3 +31,5 @@
 2. Tài liệu tham khảo
 
 ### [Machine learning for bank dataset](https://colab.research.google.com/drive/1Wx7B-B043d4hkX5dkopoAM32I8dCRoFA?usp=sharing)
+
+### [Bài Test - Tính điểm cuối kỳ](https://colab.research.google.com/drive/1WFPopvt8jE1leG5s03ZH5U6ARerYngIm?usp=sharing)
