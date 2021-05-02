@@ -29,3 +29,5 @@
 1. Tìm hiểu về bài toán Recommender Systems
 
 2. Tài liệu tham khảo
+
+### [Machine learning for bank dataset](https://colab.research.google.com/drive/1Wx7B-B043d4hkX5dkopoAM32I8dCRoFA?usp=sharing)
