@@ -2,7 +2,7 @@
 
 ### [Tuần 3](https://ngominhtoan.github.io/colab_massive_data/week3/)
 
-###### Nội dung:
+#### Nội dung:
 
 1. Tạo trang bằng Github và trình bày về spark và mapreduce.
 
@@ -10,7 +10,7 @@
 
 ### [Tuần 4](https://ngominhtoan.github.io/colab_massive_data/week4/)
 
-###### Nội dung:
+#### Nội dung:
 
 1. Spark Properties
 
@@ -20,19 +20,16 @@
 
 ### [Tuần 5](https://ngominhtoan.github.io/colab_massive_data/week5/)
 
-###### Nội dung:
-
-1. [Link Collab](https://colab.research.google.com/drive/1-gUUwruBH2_i9Qk1jSqRn4kve4UafOzy?usp=sharing)
+[Link Collab](https://colab.research.google.com/drive/1-gUUwruBH2_i9Qk1jSqRn4kve4UafOzy?usp=sharing)
 
 ### [Tuần 6](https://ngominhtoan.github.io/colab_massive_data/week6/)
 
-###### Nội dung:
-
-1. [Link Collab](https://colab.research.google.com/drive/1tCu-o86wCqdQpkoycdtPMZLIrcO6z__L?usp=sharing)
+[Link Collab](https://colab.research.google.com/drive/1tCu-o86wCqdQpkoycdtPMZLIrcO6z__L?usp=sharing)
 
 ### [Recommend System](https://ngominhtoan.github.io/colab_massive_data/RecommendSystem/)
 
-###### Nội dung:
+#### Nội dung:
 
 1. Tìm hiểu về bài toán Recommender Systems
+
 2. Tài liệu tham khảo
